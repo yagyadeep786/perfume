@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-const host= import.meta.env.HOST;
+const host= import.meta.env.VITE_HOST;
 
 const initialState = {
   cartItems: [],

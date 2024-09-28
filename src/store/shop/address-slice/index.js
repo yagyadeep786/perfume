@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const host= import.meta.env.HOST;
+const host= import.meta.env.VITE_HOST;
 
 const initialState = {
   isLoading: false,
