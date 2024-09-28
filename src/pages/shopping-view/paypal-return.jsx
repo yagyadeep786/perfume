@@ -1,29 +1,28 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { captureRazorpayPayment } from "@/store/shop/order-slice"; // Adjusted action for Razorpay
+import { capturePayment } from "@/store/shop/order-slice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-function RazorpayReturnPage() {
+function PaypalReturnPage() {
   const dispatch = useDispatch();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const paymentId = params.get("razorpay_payment_id"); // Razorpay's payment ID
-  const razorpayOrderId = params.get("razorpay_order_id"); // Razorpay's order ID
-  const signature = params.get("razorpay_signature"); // Razorpay's signature
+  const paymentId = params.get("paymentId");
+  const payerId = params.get("PayerID");
 
   useEffect(() => {
-    if (paymentId && razorpayOrderId && signature) {
+    if (paymentId && payerId) {
       const orderId = JSON.parse(sessionStorage.getItem("currentOrderId"));
 
-      dispatch(captureRazorpayPayment({ paymentId, razorpayOrderId, signature, orderId })).then((data) => {
+      dispatch(capturePayment({ paymentId, payerId, orderId })).then((data) => {
         if (data?.payload?.success) {
           sessionStorage.removeItem("currentOrderId");
           window.location.href = "/shop/payment-success";
         }
       });
     }
-  }, [paymentId, razorpayOrderId, signature, dispatch]);
+  }, [paymentId, payerId, dispatch]);
 
   return (
     <Card>
@@ -34,4 +33,4 @@ function RazorpayReturnPage() {
   );
 }
 
-export default RazorpayReturnPage;
+export default PaypalReturnPage;
